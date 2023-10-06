@@ -1,0 +1,42 @@
+module audio_player_tb;
+  reg clk;
+  reg rst;
+  wire button;
+  wire speaker;
+  
+  // Instantiate the audio_player module
+  audio_player dut (
+    .clk(clk),
+    .rst(rst),
+    .button(button),
+    .speaker(speaker)
+  );
+  
+  // Clock generation
+  always begin
+    #5 clk = ~clk;
+  end
+
+  // Initializations
+  initial begin
+    clk = 0;
+    rst = 0;
+    #10 rst = 1; // Release reset after 10 clock cycles
+
+    // Test case 1: Simulate button press and audio playback
+    #20 rst = 0; // Release reset
+    #100 rst = 1; // Apply reset
+    #20 rst = 0; // Release reset
+    #50 rst = 1; // Apply reset
+    #20 rst = 0; // Release reset
+
+    // Test case 2: No button press, audio should not play
+    #100 rst = 1; // Apply reset
+    #20 rst = 0; // Release reset
+
+    // Add more test cases as needed
+    
+    // Finish simulation
+    $finish;
+  end
+endmodule
